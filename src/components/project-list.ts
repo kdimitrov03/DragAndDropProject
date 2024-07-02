@@ -10,9 +10,10 @@ namespace App {
     implements DragTarget
   {
     assignedProjects: Project[] = [];
-    constructor(private type: "active" | "finished") {
+    constructor(private type: "active" | "finished" | "to-do" | "review") {
+      //super(the id of the template we gonna use,where we gonna store the values,if we want to add at start(true) else at the
+      //end,if we want to add an Id to the element we are creating)
       super("project-list", "app", false, `${type}-projects`);
-
       this.configure();
       this.renderContent();
     }
@@ -21,7 +22,9 @@ namespace App {
       const listElement = document.getElementById(
         `${this.type}-projects-list`
       )! as HTMLUListElement;
+      //we clear the project list element
       listElement.innerHTML = "";
+      //go through all the projects and add them to the ul of the project list instance
       for (const project of this.assignedProjects) {
         new ProjectItem(this.element.querySelector("ul")!.id, project);
       }
@@ -37,9 +40,17 @@ namespace App {
     @autobind
     dropHandler(event: DragEvent) {
       const prjId = event.dataTransfer!.getData("text/plain");
+      let status;
+      if(this.type==="active"){
+        status = ProjectStatus.Active;
+      }else if(this.type==="to-do"){
+      status=  ProjectStatus.ToDo
+      }else if(this.type==="review"){
+        status= ProjectStatus.Review
+      }else status= ProjectStatus.Finished;
       projectState.moveProject(
         prjId,
-        this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+     status
       );
     }
     @autobind
@@ -48,23 +59,28 @@ namespace App {
       listEl.classList.remove("droppable");
     }
     configure(): void {
+      //add event listeners so that we can drag the drop elements into it
       this.element.addEventListener("dragover", this.dragOverHandler);
       this.element.addEventListener("dragleave", this.dragLeaveHandler);
       this.element.addEventListener("drop", this.dropHandler);
-
+      //adds a listener to the listeners array so that every time a project is added or has its status changed
       projectState.addListener((projects: Project[]) => {
+        //filter the projects depending on the type of project list(active or finished)
         const relevantProjects = projects.filter((prj) => {
           if (this.type === "active") {
             return prj.status === ProjectStatus.Active;
-          } else {
-            return prj.status === ProjectStatus.Finished;
-          }
+          } else if (this.type === "to-do") {
+            return prj.status === ProjectStatus.ToDo;
+          } else if (this.type === "review") {
+            return prj.status === ProjectStatus.Review;
+          } else return prj.status === ProjectStatus.Finished;
         });
         this.assignedProjects = relevantProjects;
         this.renderProjects();
       });
     }
     renderContent() {
+      //adds an ID to the project list and Header to the Section that contains the projectList
       const listId = `${this.type}-projects-list`;
       this.element.querySelector("ul")!.id = listId;
       this.element.querySelector("h2")!.textContent =

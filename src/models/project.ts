@@ -1,7 +1,9 @@
 namespace App {
-  export enum ProjectStatus { //add two more to do and for review from review only to finished or active
+  export enum ProjectStatus { 
     Active,
     Finished,
+    ToDo,
+    Review
   }
   export class Project {
     constructor(

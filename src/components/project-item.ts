@@ -18,15 +18,19 @@ namespace App {
       }
     }
     constructor(hostId: string, project: Project) {
+    //super(the id of the template we gonna use,where we gonna store the values,if we want to add at start(true) else at the
+    //end,if we want to add an Id to the element we are creating)
       super("single-project", hostId, false, project.id);
       this.project = project;
       this.configure();
       this.renderContent();
     }
+    //add dragstart and dragend event listeners to the project element
     configure(): void {
       this.element.addEventListener("dragstart", this.dragStartHandler);
       this.element.addEventListener("dragend", this.dragEndHandler); //
     }
+    //add the text content to the project element
     renderContent(): void {
       this.element.querySelector("h2")!.textContent = this.project.title;
       this.element.querySelector("h3")!.textContent =

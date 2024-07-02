@@ -75,6 +75,19 @@ button:active {
 #finished-projects header {
   background: #0044ff;
 }
+#to-do-projects {
+  border-color: #dfff28;
+}
+#review-projects {
+  border-color: #db59ff;
+}
+
+#review-projects header {
+  background: #f081ff;
+}
+#to-do-projects header {
+  background: #aff30f;
+}
 .droppable{
   background: #ffe3ee;
 }
