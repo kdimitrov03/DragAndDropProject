@@ -39,7 +39,7 @@ namespace App {
     }
     @autobind
     dragStartHandler(event: DragEvent) {
-      event.dataTransfer!.setData("text/plain", this.project.id);
+      event.dataTransfer!.setData("text/plain", this.project.id+" "+this.project.status);
       event.dataTransfer!.effectAllowed = "move";
     }
     @autobind

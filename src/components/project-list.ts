@@ -39,19 +39,20 @@ namespace App {
     }
     @autobind
     dropHandler(event: DragEvent) {
-      const prjId = event.dataTransfer!.getData("text/plain");
+      const [prjId,prjStatus] = event.dataTransfer!.getData("text/plain").split(" ");
       let status;
-      if(this.type==="active"){
+     
+      if (this.type === "active") {
         status = ProjectStatus.Active;
-      }else if(this.type==="to-do"){
-      status=  ProjectStatus.ToDo
-      }else if(this.type==="review"){
-        status= ProjectStatus.Review
-      }else status= ProjectStatus.Finished;
-      projectState.moveProject(
-        prjId,
-     status
-      );
+      } else if (this.type === "to-do") {
+        if(+prjStatus===ProjectStatus.Review){
+            status = ProjectStatus.Review
+        }else{
+        status = ProjectStatus.ToDo;}
+      } else if (this.type === "review") {
+        status = ProjectStatus.Review;
+      } else status = ProjectStatus.Finished;
+      projectState.moveProject(prjId, status);
     }
     @autobind
     dragLeaveHandler(_event: DragEvent) {
@@ -67,6 +68,7 @@ namespace App {
       projectState.addListener((projects: Project[]) => {
         //filter the projects depending on the type of project list(active or finished)
         const relevantProjects = projects.filter((prj) => {
+        
           if (this.type === "active") {
             return prj.status === ProjectStatus.Active;
           } else if (this.type === "to-do") {
