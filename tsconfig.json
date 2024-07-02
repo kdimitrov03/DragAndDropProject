@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "AMD",
+    "module": "ES2015",
     "lib": [
       "dom",
       "es6",
@@ -9,7 +9,7 @@
       "scripthost"
     ],
     "sourceMap": true,
-    "outFile": "./dist/bundle.js",
+    //"outFile": "./dist/bundle.js",
     "outDir": "./dist",
     "rootDir": "./src",
     "removeComments": true,
