@@ -11,7 +11,7 @@
     "sourceMap": true,
     //"outFile": "./dist/bundle.js",
     "outDir": "./dist",
-    "rootDir": "./src",
+    //"rootDir": "./src",
     "removeComments": true,
     "noEmitOnError": true,
     "strict": true,

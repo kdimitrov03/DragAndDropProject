@@ -1,15 +1,16 @@
 //Project input class
-import { Component } from "./base-components.js";
-import { Validatable, validate } from "../util/validation.js";
-import { autobind } from "../decorators/autobind.js";
-import { projectState } from "../state/project-state.js";
+import { Component } from "./base-components";
+import { Validatable, validate } from "../util/validation";
+import { projectState } from "../state/project-state";
+//ProjectInput:class which takes care of the user input with validation and event listener for submitting
 export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
   peopleInputElement: HTMLInputElement;
   constructor() {
-    //super(the id of the template we gonna use,where we gonna store the values,if we want to add at start(true) else at the
-    //end,if we want to add an Id to the element we are creating)
+    //super(the id of the template we gonna use,where we gonna store the values(id of the host),
+    //if we want to add at start(true) else at the
+    //end,the id we want to give to the element if we want)
     super("project-input", "app", true, "user-input");
     this.titleInputElement = this.element.querySelector(
       "#title"
@@ -23,11 +24,10 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     this.configure();
   }
   configure() {
-    this.element.addEventListener("submit", this.submitHandler);
+    this.element.addEventListener("submit", this.submitHandler.bind(this));
   }
   renderContent(): void {}
   //on submit
-  @autobind
   private submitHandler(event: Event): void {
     event.preventDefault();
     const userInput = this.gatherUserInput();
@@ -50,26 +50,77 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     const enteredDescription = this.descriptionInputElement.value;
     const enteredPeoples = this.peopleInputElement.value;
     //adds the requirements for each input and then calls the validate function to check if they meet the requirements
+    const titleMinLength = 4;
+    const titleMaxLength = 20;
+    const titleIsRequired = true;
+    const descriptionMinLength = 7;
+    const descriptionMaxLength = 50;
+    const descriptionIsRequired = true;
+    const peopleMinValue = 2;
+    const peopleIsRequired = true;
+    const peopleMaxValue = 9;
     const titleValidatable: Validatable = {
       value: enteredTitle,
-      required: true,
+      required: titleIsRequired,
+      minLength: titleMinLength,
+      maxLength: titleMaxLength
     };
     const descriptionValidatable: Validatable = {
       value: enteredDescription,
-      required: true,
-      minLength: 7,
+      required: descriptionIsRequired,
+      minLength: descriptionMinLength,
+      maxLength:descriptionMaxLength
     };
     const peopleValidatable: Validatable = {
       value: +enteredPeoples,
-      required: true,
-      minValue: 1,
+      required: peopleIsRequired,
+      minValue: peopleMinValue,
+      maxValue: peopleMaxValue,
     };
-    if (
-      !validate(titleValidatable) ||
-      !validate(descriptionValidatable) ||
-      !validate(peopleValidatable)
-    ) {
-      alert("Please enter valid input");
+    const titleIsValid = validate(titleValidatable);
+    const descriptionIsValid = validate(descriptionValidatable);
+    const peopleIsValid = validate(peopleValidatable);
+    if (!titleIsValid || !descriptionIsValid || !peopleIsValid) {
+      let errorText = "";
+      if (!titleIsValid) {
+        if (titleIsRequired && enteredTitle === "") {
+          errorText += `Title is required \n`;
+        }
+        if (titleIsRequired && enteredTitle !== "") {
+          if (titleMinLength > enteredTitle.length) {
+            errorText += `Title needs to have a minimum of ${titleValidatable.minLength} characters\n`;
+          }
+          if (titleMaxLength < enteredTitle.length) {
+            errorText += `Title can have a maximum of ${titleValidatable.maxLength} characters\n`;
+          }
+        }
+      }
+      if (!descriptionIsValid) {
+        if (descriptionIsRequired && enteredDescription === "") {
+          errorText += `Description is required \n`;
+        }
+        if (descriptionIsRequired && enteredDescription!=="") {
+          if (descriptionMinLength > enteredDescription.length) {
+            errorText += `Description needs to have a minimum of ${descriptionValidatable.minLength} characters\n`;
+          }
+          if (descriptionMaxLength < enteredDescription.length) {
+            errorText += `Description can have a maximum of ${descriptionValidatable.maxLength} characters\n`;
+          }
+        }
+      }
+      if (!peopleIsValid) {
+        if (peopleIsRequired && enteredPeoples === ""){
+          errorText += `Number of people is required \n`;
+        }
+        if(peopleIsRequired && enteredPeoples!=="") {
+        if (peopleMinValue>+enteredPeoples) {
+          errorText += `There needs to be a minimum of ${peopleValidatable.minValue} people\n`;
+        }
+        if (peopleMaxValue<+enteredPeoples) {
+          errorText += `There can be a maximum of ${peopleValidatable.maxValue} people\n`;
+        }}
+      }
+      alert(errorText);
     } else {
       return [enteredTitle, enteredDescription, Number(enteredPeoples)];
     }

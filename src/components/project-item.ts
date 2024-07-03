@@ -1,7 +1,6 @@
-import { Component } from "./base-components.js";
-import { Draggable } from "../models/drag-and-drop.js";
-import { Project } from "../models/project.js";
-import { autobind } from "../decorators/autobind.js";
+import { Component } from "./base-components";
+import { Draggable } from "../models/drag-and-drop";
+import { Project } from "../models/project";
 //Project Item Class
 export class ProjectItem
   extends Component<HTMLUListElement, HTMLLIElement>
@@ -16,8 +15,9 @@ export class ProjectItem
     }
   }
   constructor(hostId: string, project: Project) {
-    //super(the id of the template we gonna use,where we gonna store the values,if we want to add at start(true) else at the
-    //end,if we want to add an Id to the element we are creating)
+    //super(the id of the template we gonna use,where we gonna store the values(id of the host),
+    //if we want to add at start(true) else at the
+    //end,the id we want to give to the element if we want)
     super("single-project", hostId, false, project.id);
     this.project = project;
     this.configure();
@@ -25,8 +25,8 @@ export class ProjectItem
   }
   //add dragstart and dragend event listeners to the project element
   configure(): void {
-    this.element.addEventListener("dragstart", this.dragStartHandler);
-    this.element.addEventListener("dragend", this.dragEndHandler); //
+    this.element.addEventListener("dragstart", this.dragStartHandler.bind(this));
+    this.element.addEventListener("dragend", this.dragEndHandler.bind(this)); //
   }
   //add the text content to the project element
   renderContent(): void {
@@ -34,7 +34,7 @@ export class ProjectItem
     this.element.querySelector("h3")!.textContent = this.persons + " assigned";
     this.element.querySelector("p")!.textContent = this.project.description;
   }
-  @autobind
+
   dragStartHandler(event: DragEvent) {
     event.dataTransfer!.setData(
       "text/plain",
@@ -42,6 +42,5 @@ export class ProjectItem
     );
     event.dataTransfer!.effectAllowed = "move";
   }
-  @autobind
   dragEndHandler(_event: DragEvent) {}
 }
