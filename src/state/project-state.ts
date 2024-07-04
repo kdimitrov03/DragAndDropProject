@@ -1,5 +1,5 @@
 import { Project } from "../models/project";
-import { projectStatus } from "../models/project";
+import { ProjectStatus } from "../models/project";
 type Listener<T> = (items: T[]) => void;
 class State<T> {
   protected stateChangeListeners: Listener<T>[] = [];
@@ -12,7 +12,7 @@ class State<T> {
 //which is used to store the projects
 //default projectState is set to be "To-Do"
 export class ProjectState extends State<Project> {
-  private defaultProjectSate: projectStatus = "To-Do";
+  private defaultProjectSate: ProjectStatus = "To-Do";
   private projects: Project[] = [];
   private static instance: ProjectState;
   private constructor() {
@@ -38,7 +38,7 @@ export class ProjectState extends State<Project> {
     this.updateListners();
   }
   //the function receives the project id and the new status and sets the Status of the project to the new status
-  moveProject(projectId: string, newStatus: projectStatus) {
+  moveProject(projectId: string, newStatus: ProjectStatus) {
     const project = this.projects.find((project) => project.id === projectId);
     if (project && project.status !== newStatus) {
       project.status = newStatus;

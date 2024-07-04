@@ -1,4 +1,5 @@
 //Project input class
+///<
 import { Component } from "./base-components";
 import { Validatable, validate } from "../util/validation";
 import { projectState } from "../state/project-state";
@@ -24,11 +25,11 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     this.configure();
   }
   configure() {
-    this.element.addEventListener("submit", this.submitHandler.bind(this));
+    this.element.addEventListener("submit", this.submitHandler);
   }
   renderContent(): void {}
   //on submit
-  private submitHandler(event: Event): void {
+  private submitHandler=(event: Event)=> {
     event.preventDefault();
     const userInput = this.gatherUserInput();
     //if user input is correct we receive the array

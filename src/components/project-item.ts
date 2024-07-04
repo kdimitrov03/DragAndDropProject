@@ -25,8 +25,8 @@ export class ProjectItem
   }
   //add dragstart and dragend event listeners to the project element
   configure(): void {
-    this.element.addEventListener("dragstart", this.dragStartHandler.bind(this));
-    this.element.addEventListener("dragend", this.dragEndHandler.bind(this)); //
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragEndHandler); //
   }
   //add the text content to the project element
   renderContent(): void {
@@ -35,12 +35,12 @@ export class ProjectItem
     this.element.querySelector("p")!.textContent = this.project.description;
   }
 
-  dragStartHandler(event: DragEvent) {
+  dragStartHandler=(event: DragEvent)=>{
     event.dataTransfer!.setData(
       "text/plain",
       this.project.id + " " + this.project.status
     );
     event.dataTransfer!.effectAllowed = "move";
   }
-  dragEndHandler(_event: DragEvent) {}
+  dragEndHandler=(_event: DragEvent)=> {}
 }

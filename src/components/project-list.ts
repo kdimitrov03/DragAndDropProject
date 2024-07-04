@@ -3,7 +3,7 @@ import { Component } from "./base-components";
 import { DragTarget } from "../models/drag-and-drop";
 import { Project } from "../models/project";
 import { ProjectItem } from "./project-item";
-import { projectStatus } from "../models/project";
+import { ProjectStatus } from "../models/project";
 import { projectState } from "../state/project-state";
 //ProjectList: class which stores the projects and initializes them with the type of list
 export class ProjectList
@@ -11,8 +11,8 @@ export class ProjectList
   implements DragTarget
 {
   assignedProjects: Project[] = [];
-  constructor(private type: projectStatus) {
- //super(the id of the template we gonna use,where we gonna store the values(id of the host),
+  constructor(private type: ProjectStatus) {
+    //super(the id of the template we gonna use,where we gonna store the values(id of the host),
     //if we want to add at start(true) else at the
     //end,the id we want to give to the element if we want)
     super("project-list", "app", false, `${type}-projects`);
@@ -31,45 +31,45 @@ export class ProjectList
       new ProjectItem(this.element.querySelector("ul")!.id, project);
     }
   }
-  dragOverHandler(event: DragEvent) {
+  dragOverHandler = (event: DragEvent) => {
     if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
       event.preventDefault();
       //we add class droppable to the ul of the element while we are dragging over it
       const listEl = this.element.querySelector("ul")!;
       listEl.classList.add("droppable");
     }
-  }
+  };
 
-  dropHandler(event: DragEvent) {
+  dropHandler = (event: DragEvent) => {
     //on drop we set the new status of the object to the status of the droped area
     //except from review to to do which we don't want to allow so we revert the status to review
-    const [prjId, prjStatus] = event
+    const [prjId, oldStatus] = event
       .dataTransfer!.getData("text/plain")
       .split(" ");
-    let status: projectStatus;
+    let newStatus: ProjectStatus;
 
     if (this.type === "Active") {
-      status = "Active";
+      newStatus = "Active";
     } else if (this.type === "To-Do") {
-      if (prjStatus === "Review") {
-        status = "Review";
+      if (oldStatus === "Review") {
+        newStatus = "Review";
       } else {
-        status = "To-Do";
+        newStatus = "To-Do";
       }
     } else if (this.type === "Review") {
-      status = "Review";
-    } else status = "Finished";
-    projectState.moveProject(prjId, status);
-  }
-  dragLeaveHandler(_event: DragEvent) {
+      newStatus = "Review";
+    } else newStatus = "Finished";
+    projectState.moveProject(prjId, newStatus);
+  };
+  dragLeaveHandler = (_event: DragEvent) => {
     const listEl = this.element.querySelector("ul")!;
     listEl.classList.remove("droppable");
-  }
+  };
   configure(): void {
     //add event listeners so that we can drag the drop elements into it
-    this.element.addEventListener("dragover", this.dragOverHandler.bind(this));
-    this.element.addEventListener("dragleave", this.dragLeaveHandler.bind(this));
-    this.element.addEventListener("drop", this.dropHandler.bind(this));
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHandler);
+    this.element.addEventListener("drop", this.dropHandler);
     //adds a listener to the listeners array so that every time a project is added or has its status changed
     projectState.addListener((projects: Project[]) => {
       //filter the projects depending on the type of project list
