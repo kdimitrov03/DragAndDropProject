@@ -141,3 +141,16 @@ button:active {
   border: 1px solid #ff0062;
   background: #f7f7f7;
 }
+.additional-info {
+  display: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  top: 100%;
+  left: 0;
+  z-index: 100; 
+  position: relative;
+  white-space: pre;
+  pointer-events: none;
+}
