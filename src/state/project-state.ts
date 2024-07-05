@@ -45,6 +45,12 @@ export class ProjectState extends State<Project> {
       this.updateListners();
     }
   }
+  deleteProject(projectId: string): void {
+    this.projects = this.projects.filter((project) => {
+      return project.id !== projectId;
+    });
+    this.updateListners();
+  }
   //calls all stateChangeListeners with a copy of the project array
   private updateListners() {
     for (const listener of this.stateChangeListeners) {
