@@ -29,17 +29,16 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   }
   renderContent(): void {}
   //on submit
-  private submitHandler=(event: Event)=> {
+  private submitHandler = (event: Event) => {
     event.preventDefault();
     const userInput = this.gatherUserInput();
     //if user input is correct we receive the array
     if (Array.isArray(userInput)) {
-      const [title, description, people] = userInput;
-      projectState.addProject(title, description, people);
+      projectState.addProject(userInput[0], userInput[1], userInput[2]);
       this.clearUserInputs();
     }
-  }
-  //cleans user input fields
+  };
+
   private clearUserInputs() {
     this.titleInputElement.value = "";
     this.descriptionInputElement.value = "";
@@ -49,7 +48,7 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   private gatherUserInput(): [string, string, number] | void {
     const enteredTitle = this.titleInputElement.value;
     const enteredDescription = this.descriptionInputElement.value;
-    const enteredPeoples = this.peopleInputElement.value;
+    const enteredPeople = this.peopleInputElement.value;
     //adds the requirements for each input and then calls the validate function to check if they meet the requirements
     const titleMinLength = 4;
     const titleMaxLength = 20;
@@ -64,16 +63,16 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
       value: enteredTitle,
       required: titleIsRequired,
       minLength: titleMinLength,
-      maxLength: titleMaxLength
+      maxLength: titleMaxLength,
     };
     const descriptionValidatable: Validatable = {
       value: enteredDescription,
       required: descriptionIsRequired,
       minLength: descriptionMinLength,
-      maxLength:descriptionMaxLength
+      maxLength: descriptionMaxLength,
     };
     const peopleValidatable: Validatable = {
-      value: +enteredPeoples,
+      value: parseInt(enteredPeople, 10),
       required: peopleIsRequired,
       minValue: peopleMinValue,
       maxValue: peopleMaxValue,
@@ -100,7 +99,7 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
         if (descriptionIsRequired && enteredDescription === "") {
           errorText += `Description is required \n`;
         }
-        if (descriptionIsRequired && enteredDescription!=="") {
+        if (descriptionIsRequired && enteredDescription !== "") {
           if (descriptionMinLength > enteredDescription.length) {
             errorText += `Description needs to have a minimum of ${descriptionValidatable.minLength} characters\n`;
           }
@@ -110,20 +109,21 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
         }
       }
       if (!peopleIsValid) {
-        if (peopleIsRequired && enteredPeoples === ""){
+        if (peopleIsRequired && enteredPeople === "") {
           errorText += `Number of people is required \n`;
         }
-        if(peopleIsRequired && enteredPeoples!=="") {
-        if (peopleMinValue>+enteredPeoples) {
-          errorText += `There needs to be a minimum of ${peopleValidatable.minValue} people\n`;
+        if (peopleIsRequired && enteredPeople !== "") {
+          if (peopleMinValue > +enteredPeople) {
+            errorText += `There needs to be a minimum of ${peopleValidatable.minValue} people\n`;
+          }
+          if (peopleMaxValue < +enteredPeople) {
+            errorText += `There can be a maximum of ${peopleValidatable.maxValue} people\n`;
+          }
         }
-        if (peopleMaxValue<+enteredPeoples) {
-          errorText += `There can be a maximum of ${peopleValidatable.maxValue} people\n`;
-        }}
       }
       alert(errorText);
     } else {
-      return [enteredTitle, enteredDescription, Number(enteredPeoples)];
+      return [enteredTitle, enteredDescription, parseInt(enteredPeople, 10)];
     }
   }
 }
