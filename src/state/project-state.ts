@@ -52,6 +52,12 @@ export class ProjectState extends State<Project> {
       this.updateListners();
     }
   }
+  deleteProject(projectId: string): void {
+    this.projects = this.projects.filter((project) => {
+      return project.id !== projectId;
+    });
+    this.updateListners();
+  }
   checkIfProjectIdExists(projectId: string): boolean {
     let idExists = false;
     this.projects.forEach((project) => {

@@ -17,6 +17,7 @@ textarea {
   margin: 0.5rem 0;
 }
 
+
 label {
   font-weight: bold;
 }
@@ -140,6 +141,18 @@ button:active {
   padding: 1rem;
   border: 1px solid #ff0062;
   background: #f7f7f7;
+}
+.fa-trash {
+  font-size: 50px; /* Size of the icon */
+  color: #ff0000; /* Color of the icon */
+}
+
+#deletionBin {
+  display: flex;
+  justify-content: center; /* Horizontal center */
+  align-items: center; /* Vertical center */
+  height: 100%; /* Full height of parent container */
+  flex-direction: row; /* or flex-direction: column; */
 }
 .additional-info {
   display: none;
