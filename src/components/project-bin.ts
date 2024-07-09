@@ -10,7 +10,7 @@ export class ProjectBin
     //super(the id of the template we gonna use,where we gonna store the values(id of the host),
     //if we want to add at start(true) else at the
     //end,the id we want to give to the element if we want)
-    super("bin", "app", false, `deletionBin`);
+    super("bin", "binDiv", false, `deletionBin`);
     this.configure();
     this.renderContent();
   }

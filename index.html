@@ -6,8 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>ProjectManager</title>
     <link rel="stylesheet" href="app.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script type="module"src="dist/bundle.js" ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script type="module" src="dist/bundle.js"></script>
   </head>
   <body>
     <template id="project-input">
@@ -22,7 +25,15 @@
         </div>
         <div class="form-control">
           <label for="people">People</label>
-          <input type="number" id="people" step="1" min="0" max="10" />
+          <input type="number" id="people" />
+        </div>
+        <div class="form-control">
+          <label for="projectId">Project Id</label>
+          <input type="number" id="projectId" step="1" min="1" max="1000000" />
+        </div>
+        <div class="form-control">
+          <label for="parentId">Project Parent Id</label>
+          <select name="parentId" id="parentId"></select>
         </div>
         <button type="submit">ADD PROJECT</button>
       </form>
@@ -30,6 +41,9 @@
     <template id="single-project">
       <li draggable="true">
         <h2></h2>
+        <h3></h3>
+        <h3 class="parent"></h3>
+        <div class="additional-info"></div>
         <h3></h3>
         <p></p>
       </li>
@@ -48,6 +62,10 @@
       </section>
     </template>
     <div id="app">
+      <div id="projectsAndBin">
+        <div id="projectStatuses"></div>
+        <div id="binDiv"></div>
+      </div>
     </div>
   </body>
 </html>

@@ -17,6 +17,7 @@ export class ProjectState extends State<Project> {
   private static instance: ProjectState;
   private constructor() {
     super();
+    this.addListener(this.showProjectIdsInSelect)
   }
 
   static getInstance() {
@@ -26,13 +27,20 @@ export class ProjectState extends State<Project> {
     this.instance = new ProjectState();
     return this.instance;
   }
-  public addProject(title: string, description: string, people: number): void {
+  public addProject(
+    title: string,
+    description: string,
+    people: number,
+    projectId: string,
+    parentId?: string
+  ): void {
     const newProject = new Project(
-      Math.random().toString(),
+      projectId,
       title,
       description,
       people,
-      this.defaultProjectSate
+      this.defaultProjectSate,
+      parentId
     );
     this.projects.push(newProject);
     this.updateListners();
@@ -50,6 +58,33 @@ export class ProjectState extends State<Project> {
       return project.id !== projectId;
     });
     this.updateListners();
+  }
+  checkIfProjectIdExists(projectId: string): boolean {
+    let idExists = false;
+    this.projects.forEach((project) => {
+      if (project.id === projectId) {
+        idExists = true;
+      }
+    });
+    return idExists;
+  }
+  showProjectIdsInSelect(projects: Project[]): void {
+    const parentIdSelect=document.getElementById("parentId")!;
+    parentIdSelect.innerHTML="";
+    parentIdSelect.appendChild(document.createElement("option"));
+    projects.forEach((project) => {
+      const option=document.createElement("option");
+      option.value=project.id;
+      option.textContent=project.id;
+      parentIdSelect.appendChild(option);
+    })
+  }
+  getProject(projectId: string): Project | undefined {
+    let projectToReturn: Project | undefined;
+
+    projectToReturn = this.projects.find((project) => project.id === projectId);
+
+    return projectToReturn;
   }
   //calls all stateChangeListeners with a copy of the project array
   private updateListners() {

@@ -6,6 +6,7 @@ export class Project {
     public title: string,
     public description: string,
     public people: number,
-    public status: ProjectStatus
+    public status: ProjectStatus,
+    public parentId?: string
   ) {}
 }
