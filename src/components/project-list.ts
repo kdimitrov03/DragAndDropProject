@@ -15,7 +15,7 @@ export class ProjectList
     //super(the id of the template we gonna use,where we gonna store the values(id of the host),
     //if we want to add at start(true) else at the
     //end,the id we want to give to the element if we want)
-    super("project-list", "app", false, `${type}-projects`);
+    super("project-list", "projectStatuses", false, `${type}-projects`);
     this.configure();
     this.renderContent();
   }

@@ -23,7 +23,8 @@ label {
 }
 
 input,
-textarea {
+textarea,
+select {
   font: inherit;
   padding: 0.2rem 0.4rem;
   width: 100%;
@@ -32,12 +33,14 @@ textarea {
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   outline: none;
   background: #fff5f9;
 }
 
 button {
+  margin-top: 2%;
   font: inherit;
   background: #ff0062;
   border: 1px solid #ff0062;
@@ -61,6 +64,10 @@ button:active {
   border: 1px solid #ff0062;
 }
 
+#projectStatuses {
+  width: 90%;
+}
+
 .projects header {
   background: #ff0062;
   height: 3.5rem;
@@ -76,9 +83,11 @@ button:active {
 #Finished-projects header {
   background: #0044ff;
 }
+
 #To-Do-projects {
   border-color: #dfff28;
 }
+
 #Review-projects {
   border-color: #db59ff;
 }
@@ -86,12 +95,18 @@ button:active {
 #Review-projects header {
   background: #f081ff;
 }
+#Review-projects .droppable {
+  background: #eeaffb;
+}
+
 #To-Do-projects header {
   background: #aff30f;
 }
-.droppable{
-  background: #ffe3ee;
+
+.droppable {
+  background: #ed136a;
 }
+
 .projects h2 {
   margin: 0;
   color: white;
@@ -133,7 +148,10 @@ button:active {
 }
 
 #Finished-projects .droppable {
-  background: #d6e1ff;
+  background: #4d6fcf;
+}
+#To-Do-projects .droppable {
+  background: #dfed91;
 }
 
 #user-input {
@@ -142,18 +160,20 @@ button:active {
   border: 1px solid #ff0062;
   background: #f7f7f7;
 }
-.fa-trash {
-  font-size: 50px; /* Size of the icon */
-  color: #ff0000; /* Color of the icon */
-}
 
+.fa-trash {
+  padding: 20%;
+  font-size: 50px;
+  color: #ff0000;
+}
 #deletionBin {
   display: flex;
-  justify-content: center; /* Horizontal center */
-  align-items: center; /* Vertical center */
-  height: 100%; /* Full height of parent container */
-  flex-direction: row; /* or flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: row;
 }
+
 .additional-info {
   display: none;
   background-color: #fff;
@@ -162,8 +182,19 @@ button:active {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   top: 100%;
   left: 0;
-  z-index: 100; 
+  z-index: 100;
   position: relative;
   white-space: pre;
   pointer-events: none;
+}
+
+#projectsAndBin {
+  display: flex;
+  align-items: center;
+}
+
+#binDiv {
+  width: 10%;
+  display: flex;
+  justify-content: center;
 }

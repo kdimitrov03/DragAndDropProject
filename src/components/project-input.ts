@@ -88,7 +88,6 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     const projectIdMinValue = 1;
     const projectIdIsRequired = true;
     const projectIdMaxValue = 1000000;
-    const projectParentIdIsRequired = false;
     const titleValidatable: Validatable = {
       value: enteredTitle,
       required: titleIsRequired,
@@ -113,22 +112,13 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
       minValue: projectIdMinValue,
       maxValue: projectIdMaxValue,
     };
-    const parentIdValidatable: Validatable = {
-      value:
-        enteredProjectParentId !== ""
-          ? parseInt(enteredProjectParentId, 10)
-          : "",
-      required: projectParentIdIsRequired,
-      minValue: projectIdMinValue,
-      maxValue: projectIdMaxValue,
-    };
+
     const titleIsValid = validate(titleValidatable);
     const descriptionIsValid = validate(descriptionValidatable);
     const peopleIsValid = validate(peopleValidatable);
     const projectIdIsValid = validate(projectIdValidatable);
     const currentObjectIdExists =
       projectState.checkIfProjectIdExists(enteredProjectId);
-    const parentIdIsValid = validate(parentIdValidatable);
     let parentIdExists = true;
     if (enteredProjectParentId !== "" && enteredProjectParentId !== undefined) {
       parentIdExists = projectState.checkIfProjectIdExists(
@@ -141,7 +131,6 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
       !descriptionIsValid ||
       !peopleIsValid ||
       !projectIdIsValid ||
-      !parentIdIsValid ||
       currentObjectIdExists ||
       !parentIdExists
     ) {
@@ -198,24 +187,8 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
           }
         }
       }
-      if (!parentIdIsValid) {
-        if (projectParentIdIsRequired && enteredProjectParentId === "") {
-          errorText += `Project Parent Id is required \n`;
-        }
-        if (projectParentIdIsRequired && enteredProjectParentId !== "") {
-          if (projectIdMinValue > parseInt(enteredProjectId)) {
-            errorText += `Parent Id needs to be bigger than ${projectIdValidatable.minValue}\n`;
-          }
-          if (projectIdMaxValue < parseInt(enteredProjectId)) {
-            errorText += `Parent Id can't be higher than ${projectIdValidatable.maxValue}\n`;
-          }
-        }
-      }
       if (currentObjectIdExists) {
         errorText += `ID already exists\n`;
-      }
-      if (!parentIdExists) {
-        errorText += `Project with ID: ${enteredProjectParentId} does not exist\n`;
       }
       alert(errorText);
     } else {

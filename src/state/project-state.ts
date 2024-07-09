@@ -17,6 +17,7 @@ export class ProjectState extends State<Project> {
   private static instance: ProjectState;
   private constructor() {
     super();
+    this.addListener(this.showProjectIdsInSelect)
   }
 
   static getInstance() {
@@ -67,7 +68,17 @@ export class ProjectState extends State<Project> {
     });
     return idExists;
   }
-
+  showProjectIdsInSelect(projects: Project[]): void {
+    const parentIdSelect=document.getElementById("parentId")!;
+    parentIdSelect.innerHTML="";
+    parentIdSelect.appendChild(document.createElement("option"));
+    projects.forEach((project) => {
+      const option=document.createElement("option");
+      option.value=project.id;
+      option.textContent=project.id;
+      parentIdSelect.appendChild(option);
+    })
+  }
   getProject(projectId: string): Project | undefined {
     let projectToReturn: Project | undefined;
 

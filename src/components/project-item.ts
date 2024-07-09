@@ -37,7 +37,7 @@ export class ProjectItem
     objectIdHeader.textContent = "Project ID: " + this.project.id;
     const extraInfoDiv = this.element.querySelector("div")!;
     //if we have a project parentId
-    if (this.project.parentId !== "" && this.project.parentId !== undefined) {
+    if (this.project.parentId !== "" && this.project.parentId !== undefined && projectState.checkIfProjectIdExists(this.project.parentId) ){
       parentIdHeader.textContent =
         "Parent Project ID: " + this.project.parentId;
       const parentObject = projectState.getProject(
